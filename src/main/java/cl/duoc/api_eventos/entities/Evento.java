@@ -1,11 +1,7 @@
 package cl.duoc.api_eventos.entities;
 
 import jakarta.persistence.*;
-
-import java.lang.annotation.Inherited;
 import java.time.LocalDate;
-
-import javax.annotation.processing.Generated;
 
 @Entity
 @Table(name = "eventos")
@@ -21,7 +17,7 @@ public class Evento {
     @Column(nullable = false)
     private LocalDate fecha;
 
-    @column(nullable = false)
+    @Column(nullable = false)
     private Double precio;
 
     public Evento() {
