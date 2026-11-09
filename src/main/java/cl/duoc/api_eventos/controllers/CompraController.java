@@ -54,6 +54,7 @@ public class CompraController {
         return ResponseEntity.ok(stats);
     }
 
+    // Clase auxiliar interna para el Request Body
     public static class CompraRequest {
         private Long eventoId;
         private Integer cantidad;
