@@ -20,34 +20,25 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtRequestFilter jwtRequestFilter;
-
-    public SecurityConfig(JwtRequestFilter jwtRequestFilter) {
-        this.jwtRequestFilter = jwtRequestFilter;
-    }
-
-    // Configuración de la cadena de seguridad HTTP
+    // Configuración de la cadena de seguridad HTTP recibiendo el filtro por parámetro para romper el ciclo
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtRequestFilter jwtRequestFilter) throws Exception {
         http
             .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF ya que usamos tokens JWT sin estado
             .authorizeHttpRequests(auth -> auth
-                // Rutas públicas (por ejemplo: autenticación, eventos públicos, H2 Console si se usa)
+                // Rutas públicas (autenticación, eventos públicos, consola H2)
                 .requestMatchers("/api/auth/**", "/api/eventos/**", "/h2-console/**").permitAll()
-                // Todas las demás rutas (como compras, estadísticas, modificaciones) requerirán autenticación
+                // Todas las demás rutas requerirán autenticación
                 .anyRequest().authenticated()
             )
-            // Permitir marcos para la consola H2 si estuviera activa
             .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
-            // Gestión de sesión sin estado (Stateless) para REST APIs con JWT
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            // Agregar nuestro filtro JWT antes del filtro de autenticación por usuario/contraseña
             .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    // Bean para gestionar los usuarios en memoria (requerido por JwtRequestFilter y AuthenticationManager)
+    // Bean para gestionar los usuarios en memoria
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
         UserDetails admin = User.builder()
