@@ -14,15 +14,14 @@ public class ApiEventosApplication {
         SpringApplication.run(ApiEventosApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner initData(EventoRepository eventoRepository) {
-        return args -> {
-            Evento evento = new Evento();
-            evento.setId(1L);
-            evento.setNombre("Conferencia Tech 2026");
-            evento.setDescripcion("Evento backend de prueba");
-            eventoRepository.save(evento);
-            System.out.println("--> Evento con ID 1 creado automáticamente.");
-        };
-    }
+	@Bean
+	public CommandLineRunner initData(EventoRepository eventoRepository) {
+    	return args -> {
+        	Evento evento = new Evento();
+        	evento.setId(1L);
+        	evento.setNombre("Conferencia Tech 2026");
+        	eventoRepository.save(evento);
+        	System.out.println("--> Evento con ID 1 creado automáticamente.");
+    	};
+	}
 }
