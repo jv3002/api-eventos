@@ -23,7 +23,7 @@ jobs:
       - name: Iniciar sesión en Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: jvera00
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Construir y publicar imagen Docker
