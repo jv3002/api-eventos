@@ -1,7 +1,7 @@
 package cl.duoc.api_eventos;
 
-import cl.duoc.api_eventos.models.Evento; // Ajusta según el paquete de tu entidad
-import cl.duoc.api_eventos.repositories.EventoRepository; // Ajusta según tu repositorio
+import cl.duoc.api_eventos.entities.Evento; // Ajusta el paquete de tu entidad Evento si es necesario
+import cl.duoc.api_eventos.repositories.EventoRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,7 +22,7 @@ public class ApiEventosApplication {
             evento.setNombre("Conferencia Tech 2026");
             evento.setDescripcion("Evento backend de prueba");
             eventoRepository.save(evento);
-            System.out.println("--> Evento con ID 1 creado automáticamente al iniciar.");
+            System.out.println("--> Evento con ID 1 creado automáticamente.");
         };
     }
 }
