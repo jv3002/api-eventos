@@ -19,42 +19,36 @@ public class CompraController {
         this.compraService = compraService;
     }
 
-    // 1. Generar / Procesar compra de entradas
     @PostMapping
     public ResponseEntity<Compra> procesarCompra(@RequestBody CompraRequest request) {
         Compra resumenCompra = compraService.procesarCompra(request.getEventoId(), request.getCantidad());
         return new ResponseEntity<>(resumenCompra, HttpStatus.CREATED);
     }
 
-    // 2. Descargar / Consultar tickets por evento
     @GetMapping("/evento/{eventoId}")
     public ResponseEntity<List<Compra>> obtenerTicketsPorEvento(@PathVariable Long eventoId) {
         List<Compra> tickets = compraService.obtenerPorEvento(eventoId);
         return ResponseEntity.ok(tickets);
     }
 
-    // 3. Modificar detalles del ticket / compra
     @PutMapping("/{id}")
     public ResponseEntity<Compra> actualizarCompra(@PathVariable Long id, @RequestBody CompraRequest request) {
         Compra actualizada = compraService.actualizarCompra(id, request.getCantidad());
         return ResponseEntity.ok(actualizada);
     }
 
-    // 4. Eliminar ticket específico
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarCompra(@PathVariable Long id) {
         compraService.eliminarCompra(id);
         return ResponseEntity.noContent().build();
     }
 
-    // 5. Reportar estadísticas de ventas y reservas por evento
     @GetMapping("/evento/{eventoId}/estadisticas")
-    public ResponseEntity> obtenerEstadisticasEvento(@PathVariable Long eventoId) {
+    public ResponseEntity obtenerEstadisticasEvento(@PathVariable Long eventoId) {
         Map<String, Object> stats = compraService.obtenerEstadisticasPorEvento(eventoId);
         return ResponseEntity.ok(stats);
     }
 
-    // Clase auxiliar interna para el Request Body
     public static class CompraRequest {
         private Long eventoId;
         private Integer cantidad;
