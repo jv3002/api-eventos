@@ -1,6 +1,7 @@
 package cl.duoc.api_eventos.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -11,24 +12,20 @@ import java.util.Optional;
 @RequestMapping("/api/tickets")
 public class TicketController {
 
-    // Lista temporal en memoria para simular la base de datos por ahora
     private static List<Ticket> listaTickets = new ArrayList<>();
     private static Long contadorId = 1L;
 
-    // 1. OBTENER TODOS LOS TICKETS (GET)
     @GetMapping
     public ResponseEntity<List<Ticket>> listarTickets() {
         return ResponseEntity.ok(listaTickets);
     }
 
-    // 2. OBTENER TICKET POR ID (GET)
     @GetMapping("/{id}")
     public ResponseEntity<Ticket> obtenerTicketPorId(@PathVariable Long id) {
         Optional<Ticket> ticket = listaTickets.stream().filter(t -> t.getId().equals(id)).findFirst();
         return ticket.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // 3. CREAR TICKET (POST)
     @PostMapping
     public ResponseEntity<Ticket> crearTicket(@RequestBody Ticket ticketRequest) {
         ticketRequest.setId(contadorId++);
@@ -36,7 +33,6 @@ public class TicketController {
         return ResponseEntity.ok(ticketRequest);
     }
 
-    // 4. ACTUALIZAR TICKET (PUT)
     @PutMapping("/{id}")
     public ResponseEntity<Ticket> actualizarTicket(@PathVariable Long id, @RequestBody Ticket ticketRequest) {
         for (Ticket t : listaTickets) {
@@ -52,8 +48,9 @@ public class TicketController {
         return ResponseEntity.notFound().build();
     }
 
-    // 5. ELIMINAR TICKET (DELETE)
+    // 5. ELIMINAR TICKET - Restringido exclusivamente para el rol ADMIN
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')") 
     public ResponseEntity<Void> eliminarTicket(@PathVariable Long id) {
         boolean removido = listaTickets.removeIf(t -> t.getId().equals(id));
         if (removido) {
@@ -62,7 +59,6 @@ public class TicketController {
         return ResponseEntity.notFound().build();
     }
 
-    // Modelo de Ticket interno
     public static class Ticket {
         private Long id;
         private String evento;
