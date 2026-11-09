@@ -20,9 +20,10 @@ public class ApiEventosApplication {
         	Evento evento = new Evento();
         	evento.setId(1L);
         	evento.setNombre("Conferencia Tech 2026");
-        	evento.setFecha(java.time.LocalDate.now()); // O new java.util.Date() dependiendo de tu entidad
+       	 	evento.setFecha(java.time.LocalDate.now()); // O el tipo de fecha que uses
+        	evento.setPrecio(15000.0); // Ajusta el valor numérico según tu tipo de dato (Double, BigDecimal, etc.)
         	eventoRepository.save(evento);
-        	System.out.println("--> Evento con ID 1 creado correctamente con fecha.");
+        	System.out.println("--> Evento con ID 1 creado correctamente con fecha y precio.");
     	};
 	}
 }
