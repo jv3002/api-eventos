@@ -1,0 +1,1 @@
+INSERT INTO evento (id, nombre, descripcion) VALUES (1, 'Conferencia Tech 2026', 'Evento backend de prueba');
