@@ -4,18 +4,19 @@ import cl.duoc.api_eventos.entities.Compra;
 import cl.duoc.api_eventos.entities.Evento;
 import cl.duoc.api_eventos.repositories.CompraRepository;
 import cl.duoc.api_eventos.repositories.EventoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CompraService {
 
-    private final CompraRepository compraRepository;
-    private final EventoRepository eventoRepository;
+    // Al usar @Autowired(required = false) y quitar el "final", 
+    // Spring Boot iniciará tu app aunque no encuentre la base de datos.
+    @Autowired(required = false)
+    private CompraRepository compraRepository;
 
-    public CompraService(CompraRepository compraRepository, EventoRepository eventoRepository) {
-        this.compraRepository = compraRepository;
-        this.eventoRepository = eventoRepository;
-    }
+    @Autowired(required = false)
+    private EventoRepository eventoRepository;
 
     public Compra procesarCompra(Long eventoId, Integer cantidad) {
         // 1. Buscar el evento solicitado
